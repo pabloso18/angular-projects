@@ -2,34 +2,89 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
 
-## Development server
+## Run server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Documentation
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the Angular Amplify [Angular Amplify](https://docs.amplify.aws/start/q/integration/angular).
 
 
-we need in install a couple of dependencies: AWS Amplify and AWS Amplify Angular
+## Configuration Steps
+
+we need to install a couple of dependencies: AWS Amplify and AWS Amplify Angular
 
 `
 $ npm install --save aws-amplify
 $ npm install --save aws-amplify-angular
 `
+
+Next go to tsconfig.app.json file and include node for the types in compilerOptions field.
+`
+"compilerOptions": {
+  "outDir": "../out-tsc/app",
+  "types": ["node"] // node is required 
+  }
+`
+
+ For Angular 6+ you need to add this to your pollyfill.ts
+
+ `
+ (window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
+`
+
+We need to create new file called aws-exports.js inside your Angular application 'scr/aws-exports.js', which holds all the configuration related to AWS Cognito.
+
+ we need to import these configurations to our app. In your main.ts file, you need to add the following imports:
+ `
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports'; 
+
+Amplify.configure(awsconfig);
+ `
+
+Sometimes depends of who you setup your Angular project, you need to add this line (on tsconfig.app.json) to secure that your project can read native JS file:
+
+`
+"compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types" : ["node"],
+    "allowJs": true -- this line
+  }
+`
+
+
+ In your root module src/app/app.module.ts, you can import AWS Amplify modules as following:
+
+`
+import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
+
+@NgModule({
+  ...
+  imports: [
+    ...
+    AmplifyAngularModule
+  ],
+  ...
+  providers: [
+    ...
+    AmplifyService
+  ]
+  ...
+})
+
+`
+
+
+
+

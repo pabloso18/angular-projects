@@ -29,12 +29,34 @@ export class LoginComponent implements OnInit  {
 
   async onSubmit() {}
 
+  handleLogin = (action: string = null): void => {
+
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+        return;
+    }
+
+    try {
+
+      const username = this.loginForm.get('username').value;
+      const password = this.loginForm.get('password').value;
+
+      this.authService.awsCognitoSignIn(username, password);
+
+    } catch (err) {
+
+      this.loginInvalid = true;
+
+    }
+
+  }
+
   async signInWithGoogle() {
-   // await this.authenticationService.socialSignIn(AuthenticationService.GOOGLE);
+    await this.authService.socialSignIn(AuthService.GOOGLE);
   }
 
   async signInWithFacebook() {
-    //await this.authenticationService.socialSignIn(AuthenticationService.FACEBOOK);
+    await this.authService.socialSignIn(AuthService.FACEBOOK);
   }
 
 }

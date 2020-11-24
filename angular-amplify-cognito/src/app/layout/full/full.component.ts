@@ -3,6 +3,7 @@ import {
   Component,
   OnInit
 } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../../service/authentication.service';
 
@@ -13,22 +14,17 @@ import { AuthService } from '../../service/authentication.service';
 })
 export class FullComponent implements OnInit {
   title = 'amplify-angular';
-  isAuthenticated: boolean;
+  isAuthenticated: Observable<boolean>;
 
-  constructor(public router: Router , public authService: AuthService) {
-
-    this.authService.isAuthenticated.subscribe(
-
-      (isAuthenticated: boolean)  => this.isAuthenticated = isAuthenticated
-
-    );
-
+  constructor(private authService: AuthService) {
   }
 
   async ngOnInit() {
+    this.isAuthenticated = this.authService.isAuthenticated;
+  }
 
-    //this.isAuthenticated = await this.authService.checkAuthenticated();
-
+  logout() {
+    this.authService.signOut();
   }
 
 }

@@ -9,7 +9,7 @@
     
       <div fxLayout="row" fxShow="false" fxShow.gt-sm>
     
-        <button mat-button routerLink="/login" *ngIf="!isAuthenticated">
+        <button mat-button routerLink="/login" *ngIf="!(isAuthenticated | async)">
     
           <mat-icon>power_settings_new</mat-icon>
     
@@ -17,7 +17,7 @@
     
         </button>
     
-        <button mat-button *ngIf="isAuthenticated" (click)="logout()">
+        <button mat-button *ngIf="isAuthenticated | async" (click)="logout()">
     
           <mat-icon>exit_to_app</mat-icon>
     
@@ -30,26 +30,26 @@
     
     </mat-toolbar>
     
-    <mat-menu x-position="before" #menu="matMenu">
-    
 
     
-      <button mat-menu-item routerLink="/login" *ngIf="!isAuthenticated">
-    
-        <mat-icon>power_settings_new</mat-icon>
-    
-        Login
-    
-      </button>
-    
-      <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
-    
-        <mat-icon>exit_to_app</mat-icon>
-    
-        Logout
-    
-      </button>
-    
-    </mat-menu>
-    
-    <router-outlet></router-outlet>
+    <div>
+
+      <router-outlet></router-outlet>
+
+    </div>
+
+
+    <footer>
+
+      <mat-toolbar  class="expanded-toolbar">
+
+      <div> Amplify Angular - © Jose Pablo Solano - 
+        <a href="https://github.com/pabloso18"> My Github</a>
+      </div>
+      
+
+    </mat-toolbar>
+
+    </footer>
+
+
